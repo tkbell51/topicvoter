@@ -3,6 +3,7 @@ package com.tbell.topicvoter.Repositories;
 import com.tbell.topicvoter.interfaces.TopicRepository;
 import com.tbell.topicvoter.models.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -22,6 +23,17 @@ public class TopicRepositoryImpl implements TopicRepository{
         return jdbcTemplate.query("SELECT * FROM topic", new TopicMapper());
 
     }
+
+    @Override
+    public void add(String title, String description) {
+        jdbcTemplate.update("INSERT INTO topic (title, description) VALUES(?,?)", title, description);
+    }
+
+    @Override
+    public void delete(long id) {
+       jdbcTemplate.update("DELETE FROM topic WHERE id = ?", id);
+    }
+
     private static class TopicMapper implements RowMapper<Topic> {
 
         @Override
